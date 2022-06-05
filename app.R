@@ -10,19 +10,14 @@ ui <- basicPage(
         "color",
         "Color:",
         c("None"="NULL",  "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
-          "Educational.Attainment"="Educational.Attainment"),
-        selected = "None"
-      ),
-      selectInput(
-        "group",
-        "Group:",
-        c("None"="NULL",  "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
-          "Educational.Attainment"="Educational.Attainment"),
+          "Educational Attainment"="Educational.Attainment"),
         selected = "None"
       )
     ),
   mainPanel(
-    plotOutput('plot1', click = 'plot_click')
+    plotOutput('plot1', click = 'plot_click'),
+    plotOutput('plot2'),
+    dataTableOutput('table')
   )
 )
 )
@@ -33,6 +28,7 @@ server <- function(input, output) {
   df <- renderData()
   
   output$plot1 <- getPlot(df, current_query)
+  output$plot2 <- getPropPlot(df, current_query)
   
   observeEvent(input$color, {
     print(input$color)
@@ -45,6 +41,8 @@ server <- function(input, output) {
     print(current_query)
     df <- renderData(current_query)
     output$plot1 <- getPlot(df, current_query)
+    output$plot2 <- getPropPlot(df, current_query)
+    output$table <- renderDataTable(df)
     }
   )
   

@@ -38,7 +38,20 @@ renderData <- function(query=NULL) {
   )
   print('std_query is...')
   print(std_query)
+  
+  df <- calcProportions(df, query)
   return(df)
+}
+
+query <- ""
+
+calcProportions <-function(df, query) {
+  mod_query <- c('Year', 'Population.Count', query)
+  mod_query <- unique(mod_query[mod_query != ""])
+  main <- df[, mod_query] %>% group_by_at('Year') %>%
+    mutate(countT = sum(Population.Count)) %>%
+    group_by_at(query, add=TRUE) %>%
+    mutate(per = round(100*Population.Count/countT,2))
 }
 
 getPlot <- function(df, current_query) {
@@ -55,6 +68,28 @@ getPlot <- function(df, current_query) {
     print(query)
     target_graph <- renderPlot({
       ggplot(df, aes_string(x="Year", y="Population.Count", group=query)) +
+        geom_line(aes_string(color=query)) +
+        geom_point(aes_string(color=query))
+    }, res = 96)
+  }
+  
+  return (target_graph)
+}
+
+getPropPlot <- function(df, current_query) {
+
+  if (is.null(current_query)) {
+    target_graph <- renderPlot({
+      ggplot(df, aes_string("Year", "per", group=1)) +
+        geom_line() +
+        geom_point()
+    }, res = 96)
+  } else {
+    query <- parseQuery(current_query)
+    print('query is...')
+    print(query)
+    target_graph <- renderPlot({
+      ggplot(df, aes_string(x="Year", y="per", group=query)) +
         geom_line(aes_string(color=query)) +
         geom_point(aes_string(color=query))
     }, res = 96)
