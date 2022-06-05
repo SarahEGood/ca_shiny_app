@@ -1,4 +1,5 @@
-df1 <- df %>% group_by(Year, Age)
+df1 <- df %>% group_by(Year)
+df1[is.na(df1)] <- 0
 df2 <- df1 %>% summarise(
-  Population.Count = sum(Population.Count)
+  Total = sum(Population.Count, na.rm=FALSE)
 )

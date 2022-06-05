@@ -1,4 +1,5 @@
 library(shiny)
+library(dplyr)
 library(ggplot2)
 
 ui <- basicPage(
@@ -11,8 +12,14 @@ server <- function(input, output) {
   df$Year <- as.POSIXct(df$Year, format= '%m/%d/%Y %H:%M:%S %p')
   df$Year <- format(df$Year, format='%Y')
   
+  df[is.na(df)] <- 0
+  
+  df <- df %>% group_by(Year) %>% summarise(
+    Population.Count = sum(Population.Count, na.rm=FALSE)
+  )
+  
   output$plot1 <- renderPlot({
-    ggplot(df, aes(Year, Population.Count, color=Personal.Income)) + geom_point()
+    ggplot(df, aes(x=Year, y=Population.Count, group=1)) + geom_line() + geom_point()
   }, res = 96)
   
   output$info <- renderText({
