@@ -1,30 +1,34 @@
 library(shiny)
 library(dplyr)
 library(ggplot2)
+source("helpers.R")
 
 ui <- basicPage(
   plotOutput('plot1', click = 'plot_click'),
-  verbatimTextOutput("info")
+  checkboxInput("income_level", "Personal Income", FALSE),
+  checkboxInput("age", "Age", FALSE)
 )
 
 server <- function(input, output) {
-  df <- read.csv('ca_edu_data.csv')
-  df$Year <- as.POSIXct(df$Year, format= '%m/%d/%Y %H:%M:%S %p')
-  df$Year <- format(df$Year, format='%Y')
   
-  df[is.na(df)] <- 0
+  current_query <- c()
+  df <- renderData()
   
-  df <- df %>% group_by(Year) %>% summarise(
-    Population.Count = sum(Population.Count, na.rm=FALSE)
+  output$plot1 <- getPlot(df, current_query)
+  
+  observeEvent(input$income_level, {
+    if (input$income_level == TRUE) {
+      current_query <- addToQuery(current_query, "Personal.Income")
+      df <- renderData(current_query)
+      output$plot1 <- getPlot(df, current_query)
+    } else {
+      current_query <- deleteFromQuery(current_query, "Personal.Income")
+      df <- renderData(current_query)
+      output$plot1 <- getPlot(df, current_query)
+    }
+  }
+    
   )
-  
-  output$plot1 <- renderPlot({
-    ggplot(df, aes(x=Year, y=Population.Count, group=1)) + geom_line() + geom_point()
-  }, res = 96)
-  
-  output$info <- renderText({
-    paste0("x=", input$plot_click$x, "\ny=", input$plot_click$y)
-  })
 }
 
 shinyApp(ui, server)
