@@ -7,6 +7,20 @@ ui <- basicPage(
   sidebarLayout(
     sidebarPanel(
       selectInput(
+        "x",
+        "X:",
+        c("Year"="Year", "Population Count"="Population.Count", "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
+          "Educational Attainment"="Educational.Attainment"),
+        selected = "Personal.Income"
+      ),
+      selectInput(
+        "y",
+        "Y:",
+        c("Year"="Year", "Population Count"="Population.Count", "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
+          "Educational Attainment"="Educational.Attainment"),
+        selected = "Population.Count"
+      ),
+      selectInput(
         "color",
         "Color:",
         c("None"="NULL",  "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
