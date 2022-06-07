@@ -4,6 +4,7 @@ library(ggplot2)
 source("helpers.R")
 
 ui <- basicPage(
+  titlePanel("Californian Population Income Data Widget"),
   sidebarLayout(
     sidebarPanel(
       selectInput(

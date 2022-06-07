@@ -86,7 +86,8 @@ getPlot <- function(df, x, y, current_query) {
     target_graph <- renderPlot({
       ggplot(df, aes_string(x=x, y=y, group=query)) +
         geom_line(aes_string(color=query)) +
-        geom_point(aes_string(color=query))
+        geom_point(aes_string(color=query)) +
+        ylab('Population')
     }, res = 96)
   }
   
@@ -108,7 +109,8 @@ getPropPlot <- function(df, x, y, current_query) {
     target_graph <- renderPlot({
       ggplot(df, aes_string(x=x, y="per", group=query)) +
         geom_line(aes_string(color=query)) +
-        geom_point(aes_string(color=query))
+        geom_point(aes_string(color=query)) +
+        ylab('Proportion of Population')
     }, res = 96)
   }
   
