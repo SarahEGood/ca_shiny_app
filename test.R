@@ -6,7 +6,7 @@ source("helpers.R")
 df <- renderData()
 current_query = c('Personal.Income')
 
-df <- renderData(c('Personal.Income','Age','Educational.Attainment'))
+df <- renderData(c('Personal.Income','Population.Count','Educational.Attainment'))
 getPlot(df, current_query)
 
 df1 <- df

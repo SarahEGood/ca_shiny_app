@@ -9,16 +9,9 @@ ui <- basicPage(
       selectInput(
         "x",
         "X:",
-        c("Year"="Year", "Population Count"="Population.Count", "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
+        c("Year"="Year", "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
           "Educational Attainment"="Educational.Attainment"),
-        selected = "Personal.Income"
-      ),
-      selectInput(
-        "y",
-        "Y:",
-        c("Year"="Year", "Population Count"="Population.Count", "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
-          "Educational Attainment"="Educational.Attainment"),
-        selected = "Population.Count"
+        selected = "Year"
       ),
       selectInput(
         "color",
@@ -39,10 +32,10 @@ ui <- basicPage(
 server <- function(input, output) {
   
   current_query <- c()
-  df <- renderData()
+  df <- renderData("Year", "Population.Count")
   
-  output$plot1 <- getPlot(df, current_query)
-  output$plot2 <- getPropPlot(df, current_query)
+  output$plot1 <- getPlot(df, "Year", "Population.Count", current_query)
+  output$plot2 <- getPropPlot(df, "Year", "Population.Count", current_query)
   
   observeEvent(input$color, {
     print(input$color)
@@ -53,12 +46,24 @@ server <- function(input, output) {
     }
     print("current query is...")
     print(current_query)
-    df <- renderData(current_query)
-    output$plot1 <- getPlot(df, current_query)
-    output$plot2 <- getPropPlot(df, current_query)
+    df <- renderData(input$x, "Population.Count", current_query)
+    output$plot1 <- getPlot(df, input$x, "Population.Count", current_query)
+    output$plot2 <- getPropPlot(df, input$x, "Population.Count", current_query)
     output$table <- renderDataTable(df)
     }
   )
+  
+  observeEvent(input$x, {
+    if (input$color == 'NULL') {
+      current_query <- c()
+    } else {
+      current_query <- c(input$color)
+    }
+    df <- renderData(input$x, "Population.Count", current_query)
+    output$plot1 <- getPlot(df, input$x, "Population.Count", current_query)
+    output$plot2 <- getPropPlot(df, input$x, "Population.Count", current_query)
+    output$table <- renderDataTable(df)
+  })
   
 }
 
