@@ -1,0 +1,13 @@
+name: ca_edu_shinyapp
+title:
+username:
+account: sarahgood
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6447826
+bundleId: 5990577
+url: https://sarahgood.shinyapps.io/ca_edu_shinyapp/
+when: 1654721542.67071
+lastSyncTime: 1654721542.67074
+asMultiple: FALSE
+asStatic: FALSE

@@ -1,5 +1,6 @@
 library(dplyr)
 library(shiny)
+library(forcats)
 
 parseQuery <- function(query) {
   return(paste(query, collapse=", "))
@@ -68,6 +69,22 @@ calcProportions <-function(df, x, y, query) {
     joined$per <- 1
   }
   
+  if ('Educational.Attainment' %in% mod_query) {
+    joined <- joined %>%
+      mutate(Educational.Attainment = fct_relevel(Educational.Attainment,
+        'Children under 15', 'No high school diploma',
+        'High school or equivalent', 'Some college, less than 4-yr degree',
+        "Bachelor's degree or higher"))
+  }
+  
+  if ('Personal.Income' %in% mod_query) {
+    joined <- joined %>%
+      mutate(Personal.Income = fct_relevel(Personal.Income,
+        'No Income', '$5,000 to $9,999', '$10,000 to $14,999',
+        '$15,000 to $24,999', '	$25,000 to $34,999', '$35,000 to $49,999',
+        '$50,000 to $74,999', '$75,000 and over'))
+  }
+  
   return(joined)
 }
 
@@ -100,18 +117,32 @@ getPropPlot <- function(df, x, y, current_query) {
     target_graph <- renderPlot({
       ggplot(df, aes_string(x, "per", group=1)) +
         geom_line() +
-        geom_point()
+        geom_point() +
+        ylab('Proportion of Population')
     }, res = 96)
   } else {
     query <- parseQuery(current_query)
     print('query is...')
     print(query)
-    target_graph <- renderPlot({
-      ggplot(df, aes_string(x=x, y="per", group=query)) +
-        geom_line(aes_string(color=query)) +
-        geom_point(aes_string(color=query)) +
-        ylab('Proportion of Population')
-    }, res = 96)
+    if (x == 'Educational.Attainment') {
+      target_graph <- renderPlot({
+        ggplot(df, aes_string(x=x, y="per", group=query)) +
+          geom_line(aes_string(color=query)) +
+          geom_point(aes_string(color=query)) +
+          ylab('Proportion of Population') +
+          scale_x_discrete(limits = c("Children under 15",
+            "No high school diploma", "High school or equivalent",
+            "Some college, less than 4-yr degree",
+            "Bachelor's degree or higher"))
+      }, res = 96)
+    } else {
+      target_graph <- renderPlot({
+        ggplot(df, aes_string(x=x, y="per", group=query)) +
+          geom_line(aes_string(color=query)) +
+          geom_point(aes_string(color=query)) +
+          ylab('Proportion of Population')
+      }, res = 96)
+    }
   }
   
   return (target_graph)
