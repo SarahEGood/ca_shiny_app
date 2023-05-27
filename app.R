@@ -9,14 +9,14 @@ ui <- basicPage(
     sidebarPanel(
       selectInput(
         "x",
-        "X:",
+        "X Variable:",
         c("Year"="Year", "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
           "Educational Attainment"="Educational.Attainment"),
         selected = "Year"
       ),
       selectInput(
         "color",
-        "Color:",
+        "Color Variable:",
         c("None"="NULL",  "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
           "Educational Attainment"="Educational.Attainment"),
         selected = "None"

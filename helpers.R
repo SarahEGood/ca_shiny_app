@@ -81,7 +81,7 @@ calcProportions <-function(df, x, y, query) {
     joined <- joined %>%
       mutate(Personal.Income = fct_relevel(Personal.Income,
         'No Income', '$5,000 to $9,999', '$10,000 to $14,999',
-        '$15,000 to $24,999', '	$25,000 to $34,999', '$35,000 to $49,999',
+        '$15,000 to $24,999', '$25,000 to $34,999', '$35,000 to $49,999',
         '$50,000 to $74,999', '$75,000 and over'))
   }
   
@@ -135,6 +135,16 @@ getPropPlot <- function(df, x, y, current_query) {
             "Some college, less than 4-yr degree",
             "Bachelor's degree or higher"))
       }, res = 96)
+    } else if (x == 'Personal.Income'){
+      target_graph <- renderPlot({
+        ggplot(df, aes_string(x=x, y="per", group=query)) +
+          geom_line(aes_string(color=query)) +
+          geom_point(aes_string(color=query)) +
+          ylab('Proportion of Population') +
+          scale_x_discrete(limits = c('No Income', '$5,000 to $9,999', '$10,000 to $14,999',
+                                      '$15,000 to $24,999', '$25,000 to $34,999', '$35,000 to $49,999',
+                                      '$50,000 to $74,999', '$75,000 and over'))
+        }, res = 96)
     } else {
       target_graph <- renderPlot({
         ggplot(df, aes_string(x=x, y="per", group=query)) +
