@@ -20,6 +20,12 @@ ui <- basicPage(
         c("None"="NULL",  "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
           "Educational Attainment"="Educational.Attainment"),
         selected = "None"
+      ),
+      fluidRow(
+        a(img(src="github-mark.png", align='center', height='25px',width='25px'),
+          href = "https://github.com/SarahEGood/ca_shiny_app"),
+        a(img(src="linkedin.png", align='center', height='25px',width='25px'),
+          href = "https://www.linkedin.com/in/segood/")
       )
     ),
   mainPanel(
