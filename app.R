@@ -21,19 +21,20 @@ ui <- basicPage(
           "Educational Attainment"="Educational.Attainment"),
         selected = "None"
       ),
-      fluidRow(
-        a(img(src="github-mark.png", align='center', height='25px',width='25px'),
-          href = "https://github.com/SarahEGood/ca_shiny_app"),
-        a(img(src="linkedin.png", align='center', height='25px',width='25px'),
-          href = "https://www.linkedin.com/in/segood/")
-      )
+      a(img(src="github-mark.png", align='center', height='25px',width='25px'),
+        href = "https://github.com/SarahEGood/ca_shiny_app"),
+      a(img(src="linkedin.png", align='center', height='25px',width='25px'),
+        href = "https://www.linkedin.com/in/segood/"),
+      div(class = 'footer',
+          style = "padding-top: 5px; font-size: 11px",
+          includeHTML("footer.html"))
     ),
   mainPanel(
     plotOutput('plot1', click = 'plot_click'),
     plotOutput('plot2'),
     dataTableOutput('table')
+    )
   )
-)
 )
 
 server <- function(input, output) {
