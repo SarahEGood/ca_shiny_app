@@ -46,6 +46,10 @@ renderData <- function(x, y, query=NULL) {
   df[, names(df) == x] <- sapply(df[, names(df) == x], as.factor)
   
   df <- calcProportions(df, x, y, query)
+  # Average population figures if year is not present as variable
+  if (!("Year" %in% colnames(df))) {
+    df$Population.Count <- df$Population.Count / 7
+  }
   return(df)
 }
 

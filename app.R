@@ -21,6 +21,8 @@ ui <- basicPage(
           "Gender"="Gender", "Educational Attainment"="Educational.Attainment"),
         selected = "None"
       ),
+      div(style = "padding-top: 5px; padding-bottom: 5px; font-size: 11px",
+         '*Population figures averaged over all years when "Year" is not selected as variable.'),
       a(img(src="github-mark.png", align='center', height='25px',width='25px'),
         href = "https://github.com/SarahEGood/ca_shiny_app"),
       a(img(src="linkedin.png", align='center', height='25px',width='25px'),
