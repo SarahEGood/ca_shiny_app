@@ -10,15 +10,15 @@ ui <- basicPage(
       selectInput(
         "x",
         "X Variable:",
-        c("Year"="Year", "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
-          "Educational Attainment"="Educational.Attainment"),
+        c("Year"="Year", "Personal Income"="Personal.Income", "Age"="Age",
+          "Gender"="Gender", "Educational Attainment"="Educational.Attainment"),
         selected = "Year"
       ),
       selectInput(
         "color",
         "Color Variable:",
-        c("None"="NULL",  "Personal Income"="Personal.Income", "Age"="Age", "Gender"="Gender",
-          "Educational Attainment"="Educational.Attainment"),
+        c("None"="NULL",  "Personal Income"="Personal.Income", "Age"="Age",
+          "Gender"="Gender", "Educational Attainment"="Educational.Attainment"),
         selected = "None"
       ),
       a(img(src="github-mark.png", align='center', height='25px',width='25px'),
@@ -38,13 +38,14 @@ ui <- basicPage(
 )
 
 server <- function(input, output) {
-  
+  # Init initial data
   current_query <- c()
   df <- renderData("Year", "Population.Count")
-  
+  # Draw initial plot
   output$plot1 <- getPlot(df, "Year", "Population.Count", current_query)
   output$plot2 <- getPropPlot(df, "Year", "Population.Count", current_query)
-  
+  # observeEvents to change plot upon changing params
+  # If color variable is changed, apply to plot and table
   observeEvent(input$color, {
     print(input$color)
     if (input$color == 'NULL') {
@@ -60,7 +61,7 @@ server <- function(input, output) {
     output$table <- renderDataTable(df)
     }
   )
-  
+  # If x variable is changed, apply to plot and table
   observeEvent(input$x, {
     if (input$color == 'NULL') {
       current_query <- c()
@@ -72,7 +73,6 @@ server <- function(input, output) {
     output$plot2 <- getPropPlot(df, input$x, "Population.Count", current_query)
     output$table <- renderDataTable(df)
   })
-  
 }
 
 shinyApp(ui, server)
