@@ -25,6 +25,8 @@ ui <- basicPage(
       ),
       div(style = "padding-top: 5px; padding-bottom: 5px; font-size: 11px",
          '*Population figures averaged over all years when "Year" is not selected as variable.'),
+      a(tags$i(class="fa-solid fa-house", style = "font-size:3rem;"),
+        href = "http://sarahegood.com/"),
       a(tags$i(class="fa-brands fa-github", style = "font-size:3rem;"),
         href = "https://github.com/SarahEGood/ca_shiny_app"),
       a(tags$i(class="fa-brands fa-linkedin", style = "font-size:3rem;"),
