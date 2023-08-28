@@ -3,7 +3,9 @@ library(dplyr)
 library(ggplot2)
 source("helpers.R")
 
+# Render UI
 ui <- basicPage(
+  tags$script(src = "https://kit.fontawesome.com/7b969bf8cd.js"),
   titlePanel("Californian Population Income Data Widget"),
   sidebarLayout(
     sidebarPanel(
@@ -23,10 +25,12 @@ ui <- basicPage(
       ),
       div(style = "padding-top: 5px; padding-bottom: 5px; font-size: 11px",
          '*Population figures averaged over all years when "Year" is not selected as variable.'),
-      a(img(src="github-mark.png", align='center', height='25px',width='25px'),
+      a(tags$i(class="fa-brands fa-github", style = "font-size:3rem;"),
         href = "https://github.com/SarahEGood/ca_shiny_app"),
-      a(img(src="linkedin.png", align='center', height='25px',width='25px'),
+      a(tags$i(class="fa-brands fa-linkedin", style = "font-size:3rem;"),
         href = "https://www.linkedin.com/in/segood/"),
+      a(tags$i(class="fa-brands fa-mastodon", style = "font-size:3rem;"),
+        href = "https://tech.lgbt/@sarahegood"),
       div(class = 'footer',
           style = "padding-top: 5px; font-size: 11px",
           includeHTML("footer.html"))
